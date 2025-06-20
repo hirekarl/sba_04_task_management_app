@@ -17,9 +17,11 @@
   </head>
   <body>
     <main class="container">
-      <div class="row mt-5">
-        <div
-          class="col-xl-4 offset-xl-2">
+      <div class="row">
+        <div class="col-xl-8 offset-xl-2 my-4">
+          <h1>SBA 4: Task Management App</h1>
+        </div>
+        <div class="col-xl-4 offset-xl-2">
           <form id="task-input-form">
             <fieldset>
               <legend>Add a new task</legend>
@@ -102,8 +104,8 @@
           <form id="task-filter-form">
             <fieldset>
               <legend>Filter tasks</legend>
-              <div class="row mb-3">
-                <div class="col-6">
+              <div class="row">
+                <div class="col-md-6 mb-3">
                   <label
                     for="task-category-filter"
                     class="col-12 col-form-label col-form-label-sm"
@@ -122,7 +124,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 mb-3">
                   <label
                     for="task-status-filter"
                     class="col-12 col-form-label col-form-label-sm"
@@ -143,10 +145,20 @@
                 </div>
               </div>
               <div class="mb-3">
-                <button id="apply-filters-button" type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                <button
+                  id="apply-filters-button"
+                  type="submit"
+                  class="btn btn-primary w-100">
+                  Apply Filters
+                </button>
               </div>
               <div class="mb-3">
-                <button id="reset-filters-button" type="reset" class="btn btn-danger btn-sm w-100">Reset Filters</button>
+                <button
+                  id="reset-filters-button"
+                  type="reset"
+                  class="btn btn-danger btn-sm w-100">
+                  Reset Filters
+                </button>
               </div>
             </fieldset>
           </form>
