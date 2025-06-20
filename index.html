@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,6 +16,75 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <main class="container">
+      <div class="row mt-5">
+        <div
+          class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+          <form>
+            <div class="row mb-3">
+              <label
+                for="task-name-input"
+                class="col-sm-2 col-form-label col-form-label-sm"
+                >Task:</label
+              >
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  id="task-name-input"
+                  class="form-control form-control-sm" />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label
+                for="task-category-input"
+                class="col-sm-2 col-form-label col-form-label-sm"
+                >Category:</label
+              >
+              <div class="col-sm-10">
+                <select
+                  id="task-category-input"
+                  class="form-select form-select-sm">
+                  <option value="work">Work</option>
+                  <option value="household">Household</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="hobby">Hobby</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label
+                for="task-deadline-input"
+                class="col-sm-2 col-form-label col-form-label-sm"
+                >Deadline:</label
+              >
+              <div class="col-sm-10">
+                <input
+                  type="date"
+                  id="task-deadline-input"
+                  class="form-control form-control-sm" />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label
+                for="task-status-input"
+                class="col-sm-2 col-form-label col-form-label-sm"
+                >Status:</label
+              >
+              <div class="col-sm-10">
+                <select
+                  id="task-status-input"
+                  class="form-select form-select-sm">
+                  <option value="not-started" selected>Not Started</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                  <option value="overdue">Overdue</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
     <script src="./app.js"></script>
   </body>
 </html>
