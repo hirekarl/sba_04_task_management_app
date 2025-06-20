@@ -30,19 +30,21 @@
               <div class="col-sm-10">
                 <input
                   type="text"
+                  name="task-name-input"
                   id="task-name-input"
                   class="form-control form-control-sm" />
               </div>
             </div>
             <div class="row mb-3">
               <label
-                for="task-category-input"
+                for="task-category-select"
                 class="col-sm-2 col-form-label col-form-label-sm"
                 >Category:</label
               >
               <div class="col-sm-10">
                 <select
-                  id="task-category-input"
+                  id="task-category-select"
+                  name="task-category-select"
                   class="form-select form-select-sm">
                   <option value="work">Work</option>
                   <option value="household">Household</option>
@@ -61,18 +63,20 @@
                 <input
                   type="date"
                   id="task-deadline-input"
+                  name="task-deadline-input"
                   class="form-control form-control-sm" />
               </div>
             </div>
             <div class="row mb-3">
               <label
-                for="task-status-input"
+                for="task-status-select"
                 class="col-sm-2 col-form-label col-form-label-sm"
                 >Status:</label
               >
               <div class="col-sm-10">
                 <select
-                  id="task-status-input"
+                  id="task-status-select"
+                  name="task-status-select"
                   class="form-select form-select-sm">
                   <option value="not-started" selected>Not Started</option>
                   <option value="in-progress">In Progress</option>
