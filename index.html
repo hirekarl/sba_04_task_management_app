@@ -19,77 +19,136 @@
     <main class="container">
       <div class="row mt-5">
         <div
-          class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+          class="col-xl-4 offset-xl-2">
           <form id="task-input-form">
-            <div class="row mb-3">
-              <label
-                for="task-name-input"
-                class="col-sm-2 col-form-label col-form-label-sm"
-                >Task:</label
-              >
-              <div class="col-sm-10">
-                <input
-                  type="text"
-                  name="task-name-input"
-                  id="task-name-input"
-                  class="form-control form-control-sm" />
+            <fieldset>
+              <legend>Add a new task</legend>
+              <div class="row mb-3">
+                <label
+                  for="task-name-input"
+                  class="col-sm-2 col-form-label col-form-label-sm"
+                  >Task:</label
+                >
+                <div class="col-sm-10">
+                  <input
+                    type="text"
+                    name="task-name-input"
+                    id="task-name-input"
+                    class="form-control form-control-sm" />
+                </div>
               </div>
-            </div>
-            <div class="row mb-3">
-              <label
-                for="task-category-select"
-                class="col-sm-2 col-form-label col-form-label-sm"
-                >Category:</label
-              >
-              <div class="col-sm-10">
-                <select
-                  id="task-category-select"
-                  name="task-category-select"
-                  class="form-select form-select-sm">
-                  <option value="work">Work</option>
-                  <option value="household">Household</option>
-                  <option value="entertainment">Entertainment</option>
-                  <option value="hobby">Hobby</option>
-                </select>
+              <div class="row mb-3">
+                <label
+                  for="task-category-select"
+                  class="col-sm-2 col-form-label col-form-label-sm"
+                  >Category:</label
+                >
+                <div class="col-sm-10">
+                  <select
+                    id="task-category-select"
+                    name="task-category-select"
+                    class="form-select form-select-sm">
+                    <option value="work">Work</option>
+                    <option value="household">Household</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="hobby">Hobby</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="row mb-3">
-              <label
-                for="task-deadline-input"
-                class="col-sm-2 col-form-label col-form-label-sm"
-                >Deadline:</label
-              >
-              <div class="col-sm-10">
-                <input
-                  type="date"
-                  id="task-deadline-input"
-                  name="task-deadline-input"
-                  class="form-control form-control-sm" />
+              <div class="row mb-3">
+                <label
+                  for="task-deadline-input"
+                  class="col-sm-2 col-form-label col-form-label-sm"
+                  >Deadline:</label
+                >
+                <div class="col-sm-10">
+                  <input
+                    type="date"
+                    id="task-deadline-input"
+                    name="task-deadline-input"
+                    class="form-control form-control-sm" />
+                </div>
               </div>
-            </div>
-            <div class="row mb-3">
-              <label
-                for="task-status-select"
-                class="col-sm-2 col-form-label col-form-label-sm"
-                >Status:</label
-              >
-              <div class="col-sm-10">
-                <select
-                  id="task-status-select"
-                  name="task-status-select"
-                  class="form-select form-select-sm">
-                  <option value="not-started" selected>Not Started</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="completed">Completed</option>
-                  <option value="overdue">Overdue</option>
-                </select>
+              <div class="row mb-3">
+                <label
+                  for="task-status-select"
+                  class="col-sm-2 col-form-label col-form-label-sm"
+                  >Status:</label
+                >
+                <div class="col-sm-10">
+                  <select
+                    id="task-status-select"
+                    name="task-status-select"
+                    class="form-select form-select-sm">
+                    <option value="not-started">Not Started</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="overdue">Overdue</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="mb-3">
-              <button type="submit" id="add-task-button" class="btn btn-primary w-100">
-                Add Task
-              </button>
-            </div>
+              <div class="mb-3">
+                <button
+                  type="submit"
+                  id="add-task-button"
+                  class="btn btn-lg btn-success w-100">
+                  Add Task
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="col-xl-4">
+          <form id="task-filter-form">
+            <fieldset>
+              <legend>Filter tasks</legend>
+              <div class="row mb-3">
+                <div class="col-6">
+                  <label
+                    for="task-category-filter"
+                    class="col-12 col-form-label col-form-label-sm"
+                    >By Category:</label
+                  >
+                  <div class="col-12">
+                    <select
+                      id="task-category-filter"
+                      name="task-category-filter"
+                      class="form-select form-select-sm"
+                      multiple>
+                      <option value="work">Work</option>
+                      <option value="household">Household</option>
+                      <option value="entertainment">Entertainment</option>
+                      <option value="hobby">Hobby</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="task-status-filter"
+                    class="col-12 col-form-label col-form-label-sm"
+                    >By Status:</label
+                  >
+                  <div class="col-12">
+                    <select
+                      name="task-status-filter"
+                      id="task-status-filter"
+                      class="form-select form-select-sm"
+                      multiple>
+                      <option value="not-started">Not Started</option>
+                      <option value="in-progress">In Progress</option>
+                      <option value="completed">Completed</option>
+                      <option value="overdue">Overdue</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <button id="apply-filters-button" type="submit" class="btn btn-primary w-100">Apply Filters</button>
+              </div>
+              <div class="mb-3">
+                <button id="reset-filters-button" type="reset" class="btn btn-danger btn-sm w-100">Reset Filters</button>
+              </div>
+            </fieldset>
           </form>
         </div>
       </div>
