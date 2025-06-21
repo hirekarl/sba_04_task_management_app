@@ -58,14 +58,17 @@ document.addEventListener("DOMContentLoaded", function () {
     domElement: document.getElementById("task-list"),
     addTask: function (task) {
       this.items.push(task)
+      this.save()
     },
     removeTask: function (task) {
       this.items.splice(this.items.indexOf(task), 1)
+      this.save()
     },
     sort: function () {
       // TODO
     },
     display: function (tempList = this.items) {
+      this.save()
       this.domElement.innerHTML = ""
       for (let task of tempList) {
         const taskListItem = task.createHTML()
@@ -73,12 +76,41 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     },
     filter: function (categoryFilters, statusFilters) {
-      let tempList = [...this.items].filter(
+      const tempList = this.items.filter(
         (task) =>
           categoryFilters.includes(task.category.value) ||
           statusFilters.includes(task.status.value)
       )
       this.display(tempList)
+    },
+    serialize: function () {
+      const tasksPropertiessOnly = this.items.map((task) =>
+        task.propertiesOnly()
+      )
+      const tasksSerialized = JSON.stringify(tasksPropertiessOnly)
+      return tasksSerialized
+    },
+    save: function () {
+      localStorage.setItem("tasks", this.serialize())
+    },
+    deserialize: function () {
+      const localStorageTasks = JSON.parse(localStorage.getItem("tasks"))
+
+      if (!localStorageTasks) {
+        localStorage.setItem("tasks", JSON.stringify([]))
+      } else {
+        for (let localStorageTask of localStorageTasks) {
+          const name = localStorageTask.name
+          const category = localStorageTask.category
+          const deadline = localStorageTask.deadline
+          const status = localStorageTask.status
+
+          const task = new Task(name, category, deadline, status)
+
+          this.items.push(task)
+          this.display()
+        }
+      }
     },
   }
 
@@ -271,7 +303,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
       return taskListItem
     }
+
+    propertiesOnly() {
+      return {
+        name: this.name,
+        category: this.category.value,
+        deadline: this.deadline,
+        status: this.status.value,
+      }
+    }
   }
+
+  taskList.deserialize()
 
   const taskInputForm = document.getElementById("task-input-form")
   taskInputForm.addEventListener("submit", function (event) {
