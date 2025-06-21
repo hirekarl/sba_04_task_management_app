@@ -284,5 +284,12 @@ document.addEventListener("DOMContentLoaded", function () {
   })
 
   const taskFilterForm = document.getElementById("task-filter-form")
-  // TODO
+  taskFilterForm.addEventListener("submit", function(event) {
+    event.preventDefault()
+    // TODO
+  })
+  taskFilterForm.addEventListener("reset", function(event) {
+    event.preventDefault()
+    // TODO
+  })
 })
