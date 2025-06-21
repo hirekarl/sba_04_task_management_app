@@ -13,7 +13,10 @@ const taskCategory = {
 }
 
 class Task {
+  static nextId = 0
+
   constructor(name, category, deadline, status) {
+    this.id = nextId++
     this.name = name
     this.category = category
     this.deadline = deadline
