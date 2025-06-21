@@ -221,21 +221,3 @@ class Task {
     return taskListItem
   }
 }
-
-const groceries = new Task(
-  "Groceries",
-  taskCategory.HOUSEHOLD,
-  "2025-06-17",
-  taskStatus.NOT_STARTED
-)
-
-const sba4 = new Task(
-  "Do SBA 4",
-  taskCategory.WORK,
-  "2025-06-22",
-  taskStatus.IN_PROGRESS
-)
-
-taskList.addTask(groceries)
-taskList.addTask(sba4)
-taskList.display()

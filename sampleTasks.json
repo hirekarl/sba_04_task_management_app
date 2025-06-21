@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Complete SBA 4",
+    "category": "work",
+    "deadline": "2025-06-23",
+    "status": "in-progress"
+  },
+  {
+    "name": "Get groceries",
+    "category": "household",
+    "deadline": "2025-06-30",
+    "status": "not-started"
+  },
+  {
+    "name": "Get ham radio General license",
+    "category": "hobby",
+    "deadline": "2027-01-01",
+    "status": "not-started"
+  },
+  {
+    "name": "Go see \"Alien\" at MoMI",
+    "category": "entertainment",
+    "deadline": "2025-06-14",
+    "status": "completed"
+  }
+]
