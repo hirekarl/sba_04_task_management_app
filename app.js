@@ -1,3 +1,8 @@
+function today() {
+  today = new Date().toISOString().slice(0, 10)
+  return today
+}
+
 const taskStatus = Object.freeze({
   COMPLETED: {
     value: "completed",
@@ -62,5 +67,28 @@ class Task {
     this.category = category
     this.deadline = deadline
     this.status = status
+  }
+
+  getStatus() {
+    return this.status
+  }
+
+  setStatus(newStatus) {
+    this.status = newStatus
+  }
+
+  isOverdue() {
+    if (this.status !== taskStatus.COMPLETED) {
+      if (today() > this.deadline) {
+        return true
+      }
+    }
+    return false
+  }
+
+  setOverdueIfIsOverdue() {
+    if (this.isOverdue()) {
+      this.setStatus(taskStatus.OVERDUE)
+    }
   }
 }
