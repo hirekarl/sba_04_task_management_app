@@ -330,7 +330,7 @@ document.addEventListener("DOMContentLoaded", function () {
       taskListItem.appendChild(deleteButton)
 
       if (this.isCompleted()) {
-        taskListItem.classList.add("opacity-50")
+        taskListItem.classList.add("opacity-75")
       }
 
       return taskListItem
