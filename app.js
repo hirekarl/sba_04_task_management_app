@@ -130,7 +130,7 @@ class Task {
 
     const checkbox = document.createElement("input")
     checkbox.type = "checkbox"
-    checkbox.classList.add("form-check-input") // , "me-1")
+    checkbox.classList.add("form-check-input")
     checkbox.setAttribute("id", `${this.htmlId}-checkbox`)
     checkbox.setAttribute("aria-label", "Mark completed.")
     checkbox.addEventListener("change", (event) => {
