@@ -65,12 +65,20 @@ document.addEventListener("DOMContentLoaded", function () {
     sort: function () {
       // TODO
     },
-    display: function () {
+    display: function (tempList = this.items) {
       this.domElement.innerHTML = ""
-      for (let task of this.items) {
+      for (let task of tempList) {
         const taskListItem = task.createHTML()
         this.domElement.appendChild(taskListItem)
       }
+    },
+    filter: function (categoryFilters, statusFilters) {
+      let tempList = [...this.items].filter(
+        (task) =>
+          categoryFilters.includes(task.category.value) ||
+          statusFilters.includes(task.status.value)
+      )
+      this.display(tempList)
     },
   }
 
@@ -284,21 +292,21 @@ document.addEventListener("DOMContentLoaded", function () {
   })
 
   const taskFilterForm = document.getElementById("task-filter-form")
+  const categoryFilterSelect = taskFilterForm.querySelector(
+    "select[name='category-filters']"
+  )
+  const statusFilterSelect = taskFilterForm.querySelector(
+    "select[name='status-filters']"
+  )
+
   taskFilterForm.addEventListener("submit", function (event) {
     event.preventDefault()
 
-    const categoryFilterSelect = event.target.querySelector(
-      "select[name='category-filters']"
-    )
     const selectedCategoryFilterOptions = Array.from(
       categoryFilterSelect.selectedOptions
     )
     const categoryFilters = selectedCategoryFilterOptions.map(
       (option) => option.value
-    )
-
-    const statusFilterSelect = event.target.querySelector(
-      "select[name='status-filters']"
     )
     const selectedStatusFilterOptions = Array.from(
       statusFilterSelect.selectedOptions
@@ -307,11 +315,18 @@ document.addEventListener("DOMContentLoaded", function () {
       (option) => option.value
     )
 
-    console.log(`Category filters: ${JSON.stringify(categoryFilters)}`)
-    console.log(`Status filters: ${JSON.stringify(statusFilters)}`)
+    taskList.filter(categoryFilters, statusFilters)
   })
   taskFilterForm.addEventListener("reset", function (event) {
     event.preventDefault()
-    // TODO
+
+    taskList.display(taskList.items)
+
+    for (let option of categoryFilterSelect.options) {
+      option.selected = false
+    }
+    for (let option of statusFilterSelect.options) {
+      option.selected = false
+    }
   })
 })
