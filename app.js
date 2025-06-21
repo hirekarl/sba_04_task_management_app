@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const checkbox = document.createElement("input")
       checkbox.type = "checkbox"
-      checkbox.classList.add("form-check-input")
+      checkbox.classList.add("form-check-input", "me-3")
       checkbox.setAttribute("id", `${this.htmlId}-checkbox`)
       checkbox.setAttribute("aria-label", "Mark completed.")
       checkbox.addEventListener("change", (event) => {
@@ -267,9 +267,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const checkboxLabel = document.createElement("label")
       checkboxLabel.setAttribute("for", `${this.htmlId}-checkbox`)
       checkboxLabel.classList.add("form-check-label", "fw-bold", "mx-2")
-      if (this.status === taskStatus.OVERDUE) {
-        checkboxLabel.classList.add("text-danger")
-      }
       checkboxLabel.innerHTML = this.isCompleted()
         ? `<del>${this.name}</del>`
         : this.name
@@ -277,9 +274,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const dueDate = document.createElement("em")
       dueDate.textContent = `Due${nbsp}${displayDate(this.deadline)}`
-      if (this.status === taskStatus.OVERDUE) {
-        dueDate.classList.add("text-danger")
-      }
       div.appendChild(dueDate)
 
       const categoryBadge = document.createElement("button")
@@ -320,8 +314,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const deleteButton = document.createElement("button")
       deleteButton.type = "button"
-      deleteButton.classList.add("ms-3", "btn-close")
       deleteButton.setAttribute("aria-label", "Delete.")
+      deleteButton.classList.add("ms-3", "btn-close")
       deleteButton.addEventListener("click", (event) => {
         event.preventDefault()
         taskList.removeTask(this)
@@ -329,8 +323,12 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       taskListItem.appendChild(deleteButton)
 
+      if (this.isCompleted() || this.status === taskStatus.OVERDUE) {
+        taskListItem.classList.add("bg-black")
+      }
+
       if (this.isCompleted()) {
-        taskListItem.classList.add("opacity-75")
+        taskListItem.classList.add("opacity-50")
       }
 
       return taskListItem
