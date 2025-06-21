@@ -10,13 +10,13 @@
 
 
 ### Viewer Instructions
-
+Go to [incredible-mousse-c22548.netlify.app](https://incredible-mousse-c22548.netlify.app/); view solution source below.
 
 ### Solution Source
 Solution source code can be found at the links below:
-- **HTML**: [`./index.html`](./index.html)
-- **JavaScript**: [`./app.js`](./app.js)
-- **CSS**: [`./style.css`](./style.css)
+- **HTML**: [`index.html`](./index.html)
+- **JavaScript**: [`app.js`](./app.js)
+- **CSS**: [`style.css`](./style.css)
 
 
 ### Reflection
