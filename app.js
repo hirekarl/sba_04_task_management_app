@@ -85,13 +85,54 @@ document.addEventListener("DOMContentLoaded", function () {
   class Task {
     static nextId = 0
 
+    initSetCategory(category) {
+      switch (category) {
+        case taskCategory.HOUSEHOLD.value:
+          category = taskCategory.HOUSEHOLD
+          break
+        case taskCategory.WORK.value:
+          category = taskCategory.WORK
+          break
+        case taskCategory.HOBBY.value:
+          category = taskCategory.HOBBY
+          break
+        case taskCategory.ENTERTAINMENT.value:
+          category = taskCategory.ENTERTAINMENT
+          break
+        default:
+          category = null
+      }
+      return category
+    }
+
+    initSetStatus(status) {
+      switch (status) {
+        case taskStatus.OVERDUE.value:
+          status = taskStatus.OVERDUE
+          break
+        case taskStatus.IN_PROGRESS.value:
+          status = taskStatus.IN_PROGRESS
+          break
+        case taskStatus.NOT_STARTED.value:
+          status = taskStatus.NOT_STARTED
+          break
+        case taskStatus.COMPLETED.value:
+          status = taskStatus.COMPLETED
+          break
+        default:
+          status = null
+      }
+      return status
+    }
+
     constructor(name, category, deadline, status) {
       this.id = Task.nextId++
       this.htmlId = `task${this.id}`
       this.name = name
-      this.category = category
+      this.category = this.initSetCategory(category)
       this.deadline = deadline // YYYY-MM-DD
-      this.status = status
+      this.status = this.initSetStatus(status)
+      console.log(this)
     }
 
     setStatus(newStatus) {
@@ -224,7 +265,22 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const taskInputForm = document.getElementById("task-input-form")
-  // TODO
+  taskInputForm.addEventListener("submit", function (event) {
+    event.preventDefault()
+
+    const taskInputFormData = new FormData(event.target)
+
+    const taskName = taskInputFormData.get("name")
+    const taskCategory = taskInputFormData.get("category")
+    const taskDeadline = taskInputFormData.get("deadline")
+    const taskStatus = taskInputFormData.get("status")
+
+    const newTask = new Task(taskName, taskCategory, taskDeadline, taskStatus)
+
+    taskList.addTask(newTask)
+    taskList.display()
+    event.target.reset()
+  })
 
   const taskFilterForm = document.getElementById("task-filter-form")
   // TODO
