@@ -58,16 +58,35 @@ document.addEventListener("DOMContentLoaded", function () {
     domElement: document.getElementById("task-list"),
     addTask: function (task) {
       this.items.push(task)
+      this.sort()
       this.save()
     },
     removeTask: function (task) {
       this.items.splice(this.items.indexOf(task), 1)
+      this.sort()
       this.save()
     },
     sort: function () {
-      // TODO
+      this.items.sort((x, y) => {
+        if (x.status.sortRank !== y.status.sortRank) {
+          return x.status.sortRank - y.status.sortRank
+        }
+        if (x.deadline !== y.deadline) {
+          const dateX = new Date(x.deadline)
+          const dateY = new Date(y.deadline)
+          return dateX - dateY
+        }
+        if (x.category.sortRank !== y.category.sortRank) {
+          return x.category.sortRank - y.category.sortRank
+        }
+        if (x.name !== y.name) {
+          return x.name.localeCompare(y.name)
+        }
+        return 0
+      })
     },
     display: function (tempList = this.items) {
+      this.sort()
       this.save()
       this.domElement.innerHTML = ""
       for (let task of tempList) {
@@ -114,9 +133,18 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   }
 
-  function todayDateString() {
-    // YYYY-MM-DD
-    return new Date().toISOString().slice(0, 10)
+  function today() {
+    const todayDate = new Date()
+
+    let year = todayDate.getFullYear()
+    let month = todayDate.getMonth() + 1
+    let day = todayDate.getDate()
+
+    year = year.toString()
+    month = month.toString().padStart(2, "0")
+    day = day.toString().padStart(2, "0")
+
+    return `${year}-${month}-${day}`
   }
 
   // &nbsp;
@@ -172,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
       this.htmlId = `task${this.id}`
       this.name = name
       this.category = initSetCategory(category)
-      this.deadline = deadline // YYYY-MM-DD
+      this.deadline = deadline
       this.status = initSetStatus(status)
     }
 
@@ -184,15 +212,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return this.status === taskStatus.COMPLETED
     }
 
-    deadlineDateString() {
-      const deadline = new Date(this.deadline)
-      // MM/DD/YYYY
-      return `Due${nbsp}${deadline.toLocaleDateString("en-US")}`
-    }
-
     setOverdueIfOverdue() {
       if (!this.isCompleted()) {
-        if (todayDateString() > this.deadline) {
+        if (today() >= this.deadline) {
           this.setStatus(taskStatus.OVERDUE)
         }
       }
@@ -244,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
       div.appendChild(checkboxLabel)
 
       const dueDate = document.createElement("em")
-      dueDate.textContent = this.deadlineDateString()
+      dueDate.textContent = `Due${nbsp}${this.deadline}`
       if (this.status === taskStatus.OVERDUE) {
         dueDate.classList.add("text-danger")
       }
@@ -315,6 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   taskList.deserialize()
+  taskList.display()
 
   const taskInputForm = document.getElementById("task-input-form")
   taskInputForm.addEventListener("submit", function (event) {
