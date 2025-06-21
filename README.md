@@ -4,7 +4,7 @@
 2025-RTT-30  
 <date datetime="2025-06-20">2025-06-20</date>  
 
-![Preview image alt text goes here.]()
+![Preview of Karl Johnson's submission for SBA 4.](./preview.png)
 
 ## Submission Summary
 
