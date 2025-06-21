@@ -7,7 +7,18 @@
 ![Preview of Karl Johnson's submission for SBA 4.](./preview.png)
 
 ## Submission Summary
+I applied our learnings related to utility classes in Bootstrap to design a user interface with all default components.
 
+### Features
+- To add a task, fill out the "Add a new task" form and click "Add Task."
+- Added tasks appear below the forms as Bootstrap `list-group-item`s, sorted first by status (Overdue, In Progress, Not Started, Completed), then by deadline, then by category (Household, Work, Hobby, Entertainment), and finally by alphabetical sequence.
+- The task list updates dynamically when tasks are added or removed, when filters are applied or reset, and when task statuses change.
+- To mark a task as Completed, click the task's checkbox. To undo, click the checkbox again.
+- Tasks are marked as Overdue if the task's deadline has passed and if not marked as Completed.
+- Users can toggle between Not Started and In Progress by clicking the status badge on the right-hand side of each task.
+- Tasks can be deleted by clicking the "X" button on the far right side of each task.
+- Users can filter tasks by interacting with the `<select multiple>` inputs in the "Filter tasks" form and clicking the "Apply Filters" button&mdash;the task list will update to display only tasks matching given statuses and categories. Clicking "Reset Filters" will clear the `<select>` inputs and display the full task list.
+- Tasks are saved to `localStorage` in an object called `tasks`. The `localStorage` object updates on every state change.
 
 ### Viewer Instructions
 Go to [incredible-mousse-c22548.netlify.app](https://incredible-mousse-c22548.netlify.app/); view solution source below.
@@ -25,7 +36,13 @@ Write a short reflection (100-200 words) included within the repository discussi
 - How you approached solving those challenges.
 - What you would improve if given more time.
 
+> It was very laborious to implement the code necessary to render each task list `<li>` and its children with Bootstrap. I had to draw a diagram on paper to understand each of these elements, then it was trial and error to get them to match the mock-ups I made in plain HTML.
 > 
+> The hardest part was wrangling JavaScript `Date()` objects, which behave differently than `datetime`s in Python. I ultimately decided it was easier to store and deal with all the dates in `YYYY-MM-DD` format, which took a bunch of research and trial and error to get right in and of itself.
+>
+> I've never parsed data from HTML forms with JavaScript before. It might have been easier to add `"click"` event listeners to each button, but I wanted to practice implementing `"submit"` and `"reset"` events.
+>
+> I was able to fix almost all the accessibility issues flagged by Lighthouse. The one that remains in my report is a flag related to background-versus-foreground contrast related to the Completed badge. With more time, I'd want to play around with custom colors and typography. I'd also like to refine the sorting functionality.
 
 ## Assignment
 ### Overview
