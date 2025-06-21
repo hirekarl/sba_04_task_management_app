@@ -11,3 +11,12 @@ const taskCategory = {
   ENTERTAINMENT: "entertainment",
   HOBBY: "hobby",
 }
+
+class Task {
+  constructor(name, category, deadline, status) {
+    this.name = name
+    this.category = category
+    this.deadline = deadline
+    this.status = status
+  }
+}
