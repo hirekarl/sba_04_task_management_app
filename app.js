@@ -89,7 +89,7 @@ class Task {
     this.htmlId = `task${this.id}`
     this.name = name
     this.category = category
-    this.deadline = deadline
+    this.deadline = deadline // YYYY-MM-DD
     this.status = status
   }
 
