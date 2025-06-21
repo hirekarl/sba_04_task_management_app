@@ -4,7 +4,7 @@
 2025-RTT-30  
 <date datetime="2025-06-20">2025-06-20</date>  
 
-![Preview of Karl Johnson's submission for SBA 4.](./preview.png)
+![Preview of Karl Johnson's submission for SBA 4.](./images/preview.png)
 
 ## Submission Summary
 I applied our learnings related to utility classes in Bootstrap to design a user interface with all default components.
