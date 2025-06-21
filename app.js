@@ -147,6 +147,16 @@ document.addEventListener("DOMContentLoaded", function () {
     return `${year}-${month}-${day}`
   }
 
+  function dateDisplay(date) {
+    let [year, month, day] = date.split("-")
+
+    year = parseInt(year)
+    month = parseInt(month)
+    day = parseInt(day)
+
+    return `${month}/${day}/${year}`
+  }
+
   // &nbsp;
   const nbsp = "\xa0"
 
@@ -266,7 +276,7 @@ document.addEventListener("DOMContentLoaded", function () {
       div.appendChild(checkboxLabel)
 
       const dueDate = document.createElement("em")
-      dueDate.textContent = `Due${nbsp}${this.deadline}`
+      dueDate.textContent = `Due${nbsp}${dateDisplay(this.deadline)}`
       if (this.status === taskStatus.OVERDUE) {
         dueDate.classList.add("text-danger")
       }
