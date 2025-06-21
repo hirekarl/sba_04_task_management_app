@@ -16,10 +16,12 @@ class Task {
   static nextId = 0
 
   constructor(name, category, deadline, status) {
-    this.id = nextId++
+    this.id = Task.nextId++
+    this.htmlId = `task${this.id}`
     this.name = name
     this.category = category
     this.deadline = deadline
     this.status = status
   }
 }
+
