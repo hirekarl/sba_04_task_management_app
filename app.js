@@ -284,11 +284,33 @@ document.addEventListener("DOMContentLoaded", function () {
   })
 
   const taskFilterForm = document.getElementById("task-filter-form")
-  taskFilterForm.addEventListener("submit", function(event) {
+  taskFilterForm.addEventListener("submit", function (event) {
     event.preventDefault()
-    // TODO
+
+    const categoryFilterSelect = event.target.querySelector(
+      "select[name='category-filters']"
+    )
+    const selectedCategoryFilterOptions = Array.from(
+      categoryFilterSelect.selectedOptions
+    )
+    const categoryFilters = selectedCategoryFilterOptions.map(
+      (option) => option.value
+    )
+
+    const statusFilterSelect = event.target.querySelector(
+      "select[name='status-filters']"
+    )
+    const selectedStatusFilterOptions = Array.from(
+      statusFilterSelect.selectedOptions
+    )
+    const statusFilters = selectedStatusFilterOptions.map(
+      (option) => option.value
+    )
+
+    console.log(`Category filters: ${JSON.stringify(categoryFilters)}`)
+    console.log(`Status filters: ${JSON.stringify(statusFilters)}`)
   })
-  taskFilterForm.addEventListener("reset", function(event) {
+  taskFilterForm.addEventListener("reset", function (event) {
     event.preventDefault()
     // TODO
   })
