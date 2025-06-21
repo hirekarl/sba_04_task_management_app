@@ -222,4 +222,10 @@ document.addEventListener("DOMContentLoaded", function () {
       return taskListItem
     }
   }
+
+  const taskInputForm = document.getElementById("task-input-form")
+  // TODO
+
+  const taskFilterForm = document.getElementById("task-filter-form")
+  // TODO
 })
