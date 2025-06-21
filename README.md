@@ -36,13 +36,13 @@ Write a short reflection (100-200 words) included within the repository discussi
 - How you approached solving those challenges.
 - What you would improve if given more time.
 
-> It was very laborious to implement the code necessary to render each task list `<li>` and its children with Bootstrap. I had to draw a diagram on paper to understand each of these elements, then it was trial and error to get them to match the mock-ups I made in plain HTML.
+> It was very laborious to implement the code necessary to render each task list `<li>` and its children with Bootstrap. I had to draw a diagram on paper to understand each of these elements, then it was trial and error to get them to match the mock-ups I made in plain HTML. *(In retrospect, I could've assigned a block with `.innerHTML`, but something about sending raw unescaped HTML through untyped, unchecked code feels off to me!)*
 > 
 > The hardest part was wrangling JavaScript `Date()` objects, which behave differently than `datetime`s in Python. I ultimately decided it was easier to store and deal with all the dates in `YYYY-MM-DD` format, which took a bunch of research and trial and error to get right in and of itself.
 >
 > I've never parsed data from HTML forms with JavaScript before. It might have been easier to add `"click"` event listeners to each button, but I wanted to practice implementing `"submit"` and `"reset"` events.
 >
-> I was able to fix almost all the accessibility issues flagged by Lighthouse. The one that remains in my report is a flag related to background-versus-foreground contrast related to the Completed badge. With more time, I'd want to play around with custom colors and typography. I'd also like to refine the sorting functionality.
+> I was able to fix almost all the accessibility issues flagged by Lighthouse. The one that remains in my report is a flag related to background-versus-foreground contrast related to the Completed badge. With more time, I'd want to play around with custom colors and typography. I'd also like to refine the sorting functionality and let users choose how to sort.
 
 ## Assignment
 ### Overview
