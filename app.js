@@ -74,9 +74,11 @@ const taskList = {
 }
 
 function todayDateString() {
+  // YYYY-MM-DD
   return new Date().toISOString().slice(0, 10)
 }
 
+// &nbsp;
 const nbsp = "\xa0"
 
 class Task {
@@ -101,6 +103,7 @@ class Task {
 
   deadlineDateString() {
     const deadline = new Date(this.deadline)
+    // MM/DD/YYYY
     return `Due${nbsp}${deadline.toLocaleDateString("en-US")}`
   }
 
@@ -149,6 +152,9 @@ class Task {
     const checkboxLabel = document.createElement("label")
     checkboxLabel.setAttribute("for", `${this.htmlId}-checkbox`)
     checkboxLabel.classList.add("form-check-label", "fw-bold", "mx-2")
+    if (this.status === taskStatus.OVERDUE) {
+      checkboxLabel.classList.add("text-danger")
+    }
     checkboxLabel.innerHTML = this.isCompleted()
       ? `<del>${this.name}</del>`
       : this.name
