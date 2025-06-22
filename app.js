@@ -126,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           const task = new Task(name, category, deadline, status)
 
+          // Don't use .addTask() here
           this.items.push(task)
           this.display()
         }
