@@ -9,7 +9,7 @@
     "name": "Get groceries",
     "category": "household",
     "deadline": "2025-06-30",
-    "status": "not-started"
+    "status": "completed"
   },
   {
     "name": "Get ham radio General license",
@@ -21,6 +21,6 @@
     "name": "Go see \"Alien\" at MoMI",
     "category": "entertainment",
     "deadline": "2025-06-14",
-    "status": "completed"
+    "status": "not-started"
   }
 ]
