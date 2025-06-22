@@ -356,8 +356,12 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       taskListItem.appendChild(deleteButton)
 
-      if (this.isCompleted() || this.status === taskStatus.OVERDUE) {
-        taskListItem.classList.add("bg-black")
+      if (this.isCompleted()) {
+        taskListItem.classList.add("bg-black", "bg-gradient")
+      }
+
+      if (this.status === taskStatus.OVERDUE) {
+        taskListItem.classList.add("bg-danger", "bg-gradient", "text-dark")
       }
 
       if (this.isCompleted()) {
