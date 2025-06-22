@@ -251,7 +251,17 @@ document.addEventListener("DOMContentLoaded", function () {
       checkbox.type = "checkbox"
       checkbox.classList.add("form-check-input", "me-3")
       checkbox.setAttribute("id", `${this.htmlId}-checkbox`)
-      checkbox.setAttribute("aria-label", `Mark "${this.name}" completed.`)
+      if (this.status !== taskStatus.COMPLETED) {
+        checkbox.setAttribute(
+          "aria-label",
+          `Click to set "${this.name}" to "Completed".`
+        )
+      } else if (this.status === taskStatus.COMPLETED) {
+        checkbox.setAttribute(
+          "aria-label",
+          `Click to set "${this.name}" to "In Progress".`
+        )
+      }
       checkbox.addEventListener("change", (event) => {
         if (event.target.checked) {
           this.setStatus(taskStatus.COMPLETED)
@@ -280,6 +290,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const categoryBadge = document.createElement("button")
       categoryBadge.type = "button"
       categoryBadge.setAttribute("id", `${this.htmlId}-category-badge`)
+      categoryBadge.setAttribute("disabled", "true")
+      categoryBadge.setAttribute("aria-disabled", "true")
       categoryBadge.classList.add(
         "btn",
         "badge",
@@ -288,6 +300,9 @@ document.addEventListener("DOMContentLoaded", function () {
         "ms-2"
       )
       categoryBadge.textContent = this.category.badgeText
+      categoryBadge.addEventListener("click", function (event) {
+        event.preventDefault()
+      })
       taskListItem.appendChild(categoryBadge)
 
       const statusBadge = document.createElement("button")
@@ -301,8 +316,25 @@ document.addEventListener("DOMContentLoaded", function () {
         "ms-2"
       )
       statusBadge.textContent = this.status.badgeText
-      statusBadge.addEventListener("click", (event) => {
-        event.preventDefault()
+      if (
+        this.status === taskStatus.COMPLETED ||
+        this.status === taskStatus.OVERDUE
+      ) {
+        statusBadge.setAttribute("disabled", "true")
+        statusBadge.setAttribute("aria-disabled", "true")
+      }
+      if (this.status === taskStatus.IN_PROGRESS) {
+        statusBadge.setAttribute(
+          "aria-label",
+          'Click to set status to "Not Started".'
+        )
+      } else if (this.status === taskStatus.NOT_STARTED) {
+        statusBadge.setAttribute(
+          "aria-label",
+          'Click to set status to "In Progress".'
+        )
+      }
+      statusBadge.addEventListener("click", () => {
         if (this.status === taskStatus.IN_PROGRESS) {
           this.setStatus(taskStatus.NOT_STARTED)
           taskList.display()
@@ -315,7 +347,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const deleteButton = document.createElement("button")
       deleteButton.type = "button"
-      deleteButton.setAttribute("aria-label", `Delete "${this.name}".`)
+      deleteButton.setAttribute("aria-label", `Click to delete "${this.name}".`)
       deleteButton.classList.add("ms-3", "btn-close")
       deleteButton.addEventListener("click", (event) => {
         event.preventDefault()
