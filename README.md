@@ -44,7 +44,7 @@ Write a short reflection (100-200 words) included within the repository discussi
 >
 > With more time, I'd want to play around with custom colors (the color combos available in the Bootstrap theme could be more accessible) and typography and layout design (maybe put the two forms on the side and have the task list on the right?). I'd also like to refine the sorting functionality and let users choose how to sort. Also, JavaScript form validation that displays error messages when required form fields are not filled.
 >
-> At the moment, there's an implementation problem where tasks that are Overdue do not immediately go to the top of the task list (they will after the next state change). If I had more time, I'd like to diagnose and fix that, too.
+> At the moment, there's an implementation problem where tasks that are Overdue do not immediately go to the top of the task list (they will after the next state change). ~~If I had more time, I'd like to diagnose and fix that, too.~~ I think I've fixed this, actually.
 
 ## Assignment
 ### Overview

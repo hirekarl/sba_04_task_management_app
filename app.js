@@ -86,6 +86,9 @@ document.addEventListener("DOMContentLoaded", function () {
       })
     },
     display: function (tempList = this.items) {
+      for (let task of tempList) {
+        task.setOverdueIfOverdue()
+      }
       this.sort()
       this.save()
       this.domElement.innerHTML = ""
@@ -232,8 +235,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     createHTML() {
-      this.setOverdueIfOverdue()
-
       const taskListItem = document.createElement("li")
       taskListItem.setAttribute("id", this.htmlId)
       taskListItem.classList.add(
