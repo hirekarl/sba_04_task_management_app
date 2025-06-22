@@ -354,12 +354,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const taskInputFormData = new FormData(event.target)
 
-    const taskName = taskInputFormData.get("name")
-    const taskCategory = taskInputFormData.get("category")
-    const taskDeadline = taskInputFormData.get("deadline")
-    const taskStatus = taskInputFormData.get("status")
+    const name = taskInputFormData.get("name")
+    const category = taskInputFormData.get("category")
+    const deadline = taskInputFormData.get("deadline")
+    const status = taskInputFormData.get("status")
 
-    const newTask = new Task(taskName, taskCategory, taskDeadline, taskStatus)
+    const newTask = new Task(name, category, deadline, status)
 
     taskList.addTask(newTask)
     taskList.display()
