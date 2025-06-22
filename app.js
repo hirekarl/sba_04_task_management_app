@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       this.id = Task.nextId++
       this.htmlId = `task${this.id}`
-      this.name = name
+      this.name = name.trim()
       this.category = initSetCategory(category)
       this.deadline = deadline
       this.status = initSetStatus(status)
@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
       checkbox.type = "checkbox"
       checkbox.classList.add("form-check-input", "me-3")
       checkbox.setAttribute("id", `${this.htmlId}-checkbox`)
-      checkbox.setAttribute("aria-label", "Mark completed.")
+      checkbox.setAttribute("aria-label", `Mark "${this.name}" completed.`)
       checkbox.addEventListener("change", (event) => {
         if (event.target.checked) {
           this.setStatus(taskStatus.COMPLETED)
@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const deleteButton = document.createElement("button")
       deleteButton.type = "button"
-      deleteButton.setAttribute("aria-label", "Delete.")
+      deleteButton.setAttribute("aria-label", `Delete "${this.name}".`)
       deleteButton.classList.add("ms-3", "btn-close")
       deleteButton.addEventListener("click", (event) => {
         event.preventDefault()
