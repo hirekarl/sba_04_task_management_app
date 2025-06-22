@@ -326,12 +326,12 @@ document.addEventListener("DOMContentLoaded", function () {
       if (this.status === taskStatus.IN_PROGRESS) {
         statusBadge.setAttribute(
           "aria-label",
-          'Click to set status to "Not Started".'
+          `Click to set "${this.name}" to "Not Started".`
         )
       } else if (this.status === taskStatus.NOT_STARTED) {
         statusBadge.setAttribute(
           "aria-label",
-          'Click to set status to "In Progress".'
+          `Click to set "${this.name}" to "In Progress".`
         )
       }
       statusBadge.addEventListener("click", () => {
