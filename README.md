@@ -43,6 +43,8 @@ Write a short reflection (100-200 words) included within the repository discussi
 > I've never parsed data from HTML forms with JavaScript before. It might have been easier to add `"click"` event listeners to each button, but I wanted to practice implementing `"submit"` and `"reset"` events.
 >
 > I was able to fix almost all the accessibility issues flagged by Lighthouse. The one that remains in my report is a flag related to background-versus-foreground contrast related to the Completed badge. With more time, I'd want to play around with custom colors and typography and layout design (maybe put the two forms on the side and have the task list on the right?). I'd also like to refine the sorting functionality and let users choose how to sort.
+>
+> Also, server-side form validation.
 
 ## Assignment
 ### Overview
