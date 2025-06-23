@@ -54,7 +54,7 @@ const taskList = {
     this.display(tempList)
   },
   serialize: function () {
-    return JSON.stringify(this.items.map((task) => task.propertiesOnly()))
+    return JSON.stringify(this.items.map((task) => task.deconstruct()))
   },
   save: function () {
     localStorage.setItem("tasks", this.serialize())
@@ -294,7 +294,7 @@ class Task {
     return taskListItem
   }
 
-  propertiesOnly() {
+  deconstruct() {
     return {
       name: this.name,
       category: this.category.value,
