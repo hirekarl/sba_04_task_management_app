@@ -2,7 +2,7 @@
 
 [Karl Johnson](https://github.com/hirekarl)  
 2025-RTT-30  
-<date datetime="2025-06-20">2025-06-20</date>  
+<time datetime="2025-06-20">2025-06-20</time>  
 
 ![Preview of Karl Johnson's submission for SBA 4.](./images/preview.png)
 
