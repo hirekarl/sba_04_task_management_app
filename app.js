@@ -212,9 +212,13 @@ class Task {
     const checkboxLabel = document.createElement("label")
     checkboxLabel.setAttribute("for", `${this.htmlId}-checkbox`)
     checkboxLabel.classList.add("form-check-label", "fw-bold", "mx-2")
-    checkboxLabel.innerHTML = this.isCompleted()
-      ? `<del>${this.name}</del>`
-      : this.name
+    if (this.isCompleted()) {
+      const checkboxLabelDel = document.createElement("del")
+      checkboxLabelDel.innerText = this.name
+      checkboxLabel.appendChild(checkboxLabelDel)
+    } else {
+      checkboxLabel.innerText = this.name
+    }
     div.appendChild(checkboxLabel)
 
     const dueDateEm = document.createElement("em")
