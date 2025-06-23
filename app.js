@@ -173,8 +173,9 @@ class Task {
 
     const checkbox = document.createElement("input")
     checkbox.type = "checkbox"
-    checkbox.classList.add("form-check-input", "me-3")
+    checkbox.checked = this.isCompleted() ? true : false
     checkbox.setAttribute("id", `${this.htmlId}-checkbox`)
+    checkbox.classList.add("form-check-input", "me-3")
     if (!this.isCompleted()) {
       checkbox.setAttribute(
         "aria-label",
@@ -195,7 +196,6 @@ class Task {
         taskList.display()
       }
     })
-    checkbox.checked = this.isCompleted() ? true : false
     div.appendChild(checkbox)
 
     const checkboxLabel = document.createElement("label")
