@@ -74,7 +74,7 @@ const taskList = {
           localStorageTask.status
         )
 
-        // Don't use .addTask() here
+        // Don't use this.addTask() here
         this.items.push(task)
       })
 
