@@ -218,12 +218,12 @@ class Task {
     div.appendChild(checkboxLabel)
 
     const dueDateEm = document.createElement("em")
-    dueDateEm.textContent = `Due${NBSP}`
+    dueDateEm.innerText = `Due${NBSP}`
     div.appendChild(dueDateEm)
 
     const dueDate = document.createElement("time")
     dueDate.setAttribute("datetime", this.deadline)
-    dueDate.textContent = displayDate(this.deadline)
+    dueDate.innerText = displayDate(this.deadline)
     dueDateEm.appendChild(dueDate)
 
     const categoryBadge = document.createElement("button")
@@ -238,7 +238,7 @@ class Task {
       "rounded-pill",
       "ms-2"
     )
-    categoryBadge.textContent = this.category.badgeText
+    categoryBadge.innerText = this.category.badgeText
     categoryBadge.addEventListener("click", (event) => event.preventDefault())
     taskListItem.appendChild(categoryBadge)
 
@@ -252,7 +252,7 @@ class Task {
       "rounded-pill",
       "ms-2"
     )
-    statusBadge.textContent = this.status.badgeText
+    statusBadge.innerText = this.status.badgeText
     if (this.isCompleted() || this.isOverdue()) {
       statusBadge.setAttribute("disabled", "true")
       statusBadge.setAttribute("aria-disabled", "true")
