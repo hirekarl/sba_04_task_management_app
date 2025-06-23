@@ -208,9 +208,14 @@ class Task {
       : this.name
     div.appendChild(checkboxLabel)
 
-    const dueDate = document.createElement("em")
-    dueDate.textContent = `Due${NBSP}${displayDate(this.deadline)}`
-    div.appendChild(dueDate)
+    const dueDateEm = document.createElement("em")
+    dueDateEm.textContent = `Due${NBSP}`
+    div.appendChild(dueDateEm)
+
+    const dueDate = document.createElement("time")
+    dueDate.setAttribute("datetime", this.deadline)
+    dueDate.textContent = displayDate(this.deadline)
+    dueDateEm.appendChild(dueDate)
 
     const categoryBadge = document.createElement("button")
     categoryBadge.type = "button"
