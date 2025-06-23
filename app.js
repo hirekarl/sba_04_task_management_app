@@ -214,20 +214,20 @@ class Task {
     checkboxLabel.classList.add("form-check-label", "fw-bold", "mx-2")
     if (this.isCompleted()) {
       const checkboxLabelDel = document.createElement("del")
-      checkboxLabelDel.innerText = this.name
+      checkboxLabelDel.textContent = this.name
       checkboxLabel.appendChild(checkboxLabelDel)
     } else {
-      checkboxLabel.innerText = this.name
+      checkboxLabel.textContent = this.name
     }
     div.appendChild(checkboxLabel)
 
     const dueDateEm = document.createElement("em")
-    dueDateEm.innerText = `Due${NBSP}`
+    dueDateEm.textContent = `Due${NBSP}`
     div.appendChild(dueDateEm)
 
     const dueDate = document.createElement("time")
     dueDate.setAttribute("datetime", this.deadline)
-    dueDate.innerText = displayDate(this.deadline)
+    dueDate.textContent = displayDate(this.deadline)
     dueDateEm.appendChild(dueDate)
 
     const categoryBadge = document.createElement("button")
@@ -242,7 +242,7 @@ class Task {
       "rounded-pill",
       "ms-2"
     )
-    categoryBadge.innerText = this.category.badgeText
+    categoryBadge.textContent = this.category.badgeText
     categoryBadge.addEventListener("click", (event) => event.preventDefault())
     taskListItem.appendChild(categoryBadge)
 
@@ -256,7 +256,7 @@ class Task {
       "rounded-pill",
       "ms-2"
     )
-    statusBadge.innerText = this.status.badgeText
+    statusBadge.textContent = this.status.badgeText
     if (this.isCompleted() || this.isOverdue()) {
       statusBadge.setAttribute("disabled", "true")
       statusBadge.setAttribute("aria-disabled", "true")
