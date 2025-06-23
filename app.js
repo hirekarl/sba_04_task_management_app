@@ -189,11 +189,9 @@ class Task {
     checkbox.addEventListener("change", (event) => {
       if (event.target.checked) {
         this.setStatus(taskStatus.COMPLETED)
-
         taskList.display()
       } else {
         this.setStatus(taskStatus.IN_PROGRESS)
-
         taskList.display()
       }
     })
@@ -263,11 +261,9 @@ class Task {
       event.preventDefault()
       if (this.status === taskStatus.IN_PROGRESS) {
         this.setStatus(taskStatus.NOT_STARTED)
-
         taskList.display()
       } else if (this.status === taskStatus.NOT_STARTED) {
         this.setStatus(taskStatus.IN_PROGRESS)
-
         taskList.display()
       }
     })
@@ -345,9 +341,9 @@ document.addEventListener("DOMContentLoaded", () => {
       categoryFilterSelect.selectedOptions
     ).map((option) => option.value)
 
-    const statusFilters = Array.from(statusFilterSelect.selectedOptions).map(
-      (option) => option.value
-    )
+    const statusFilters = Array.from(
+      statusFilterSelect.selectedOptions
+    ).map((option) => option.value)
 
     taskList.filter(categoryFilters, statusFilters)
   })
@@ -358,6 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Array.from(categoryFilterSelect.options).forEach(
       (option) => (option.selected = false)
     )
+
     Array.from(statusFilterSelect.options).forEach(
       (option) => (option.selected = false)
     )
