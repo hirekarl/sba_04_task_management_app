@@ -45,7 +45,10 @@ const taskList = {
     this.sort()
     this.save()
 
-    tempList.forEach((task) => this.domElement.appendChild(task.createHTML()))
+    const tempListDocFrag = new DocumentFragment()
+    tempList.forEach((task) => tempListDocFrag.appendChild(task.createHTML()))
+
+    this.domElement.appendChild(tempListDocFrag)
   },
   filter: function (categoryFilters, statusFilters) {
     const tempList = this.items.filter(
