@@ -213,9 +213,9 @@ class Task {
     checkboxLabel.setAttribute("for", `${this.htmlId}-checkbox`)
     checkboxLabel.classList.add("form-check-label", "fw-bold", "mx-2")
     if (this.isCompleted()) {
-      const checkboxLabelDel = document.createElement("del")
-      checkboxLabelDel.textContent = this.name
-      checkboxLabel.appendChild(checkboxLabelDel)
+      const checkboxLabelStrikethrough = document.createElement("s")
+      checkboxLabelStrikethrough.textContent = this.name
+      checkboxLabel.appendChild(checkboxLabelStrikethrough)
     } else {
       checkboxLabel.textContent = this.name
     }
