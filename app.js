@@ -15,6 +15,9 @@ const taskList = {
 
     this.sort()
     this.save()
+
+    task = null
+    Task.cleanup()
   },
   sort: function () {
     this.items.sort((a, b) => {
@@ -85,6 +88,12 @@ const taskList = {
 
 class Task {
   static nextId = 0
+  static instances = []
+
+  static cleanup() {
+    const nullsRemoved = this.instances.filter((task) => task !== null)
+    this.instances = nullsRemoved
+  }
 
   constructor(name, category, deadline, status) {
     function initSetCategory(category) {
@@ -135,6 +144,8 @@ class Task {
     this.category = initSetCategory(category)
     this.deadline = deadline
     this.status = initSetStatus(status)
+
+    Task.instances.push(this)
   }
 
   setStatus(newStatus) {
