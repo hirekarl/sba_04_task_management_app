@@ -323,7 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // TODO: Implement form input validation
 
-    const newTask = new Task(
+    let newTask = new Task(
       taskInputFormData.get("name"),
       taskInputFormData.get("category"),
       taskInputFormData.get("deadline"),
