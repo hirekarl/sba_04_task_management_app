@@ -1,392 +1,310 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const taskStatus = Object.freeze({
-    OVERDUE: {
-      value: "overdue",
-      badgeText: "OVERDUE",
-      bsColor: "danger",
-      sortRank: 1,
-    },
-    IN_PROGRESS: {
-      value: "in-progress",
-      badgeText: "IN PROGRESS",
-      bsColor: "warning",
-      sortRank: 2,
-    },
-    NOT_STARTED: {
-      value: "not-started",
-      badgeText: "NOT STARTED",
-      bsColor: "info",
-      sortRank: 3,
-    },
-    COMPLETED: {
-      value: "completed",
-      badgeText: "COMPLETED",
-      bsColor: "success",
-      sortRank: 4,
-    },
-  })
+import { taskStatus, taskCategory, NBSP } from "./_constants.js"
+import { today, displayDate } from "./_helpers.js"
 
-  const taskCategory = Object.freeze({
-    HOUSEHOLD: {
-      value: "household",
-      badgeText: "HOUSEHOLD",
-      bsColor: "primary",
-      sortRank: 1,
-    },
-    WORK: {
-      value: "work",
-      badgeText: "WORK",
-      bsColor: "secondary",
-      sortRank: 2,
-    },
-    HOBBY: {
-      value: "hobby",
-      badgeText: "HOBBY",
-      bsColor: "dark",
-      sortRank: 3,
-    },
-    ENTERTAINMENT: {
-      value: "entertainment",
-      badgeText: "ENTERTAINMENT",
-      bsColor: "light",
-      sortRank: 4,
-    },
-  })
+const taskList = {
+  items: [],
+  domElement: document.getElementById("task-list"),
+  addTask: function (task) {
+    this.items.push(task)
 
-  const taskList = {
-    items: [],
-    domElement: document.getElementById("task-list"),
-    addTask: function (task) {
-      this.items.push(task)
-      this.sort()
-      this.save()
-    },
-    removeTask: function (task) {
-      this.items.splice(this.items.indexOf(task), 1)
-      this.sort()
-      this.save()
-    },
-    sort: function () {
-      this.items.sort((x, y) => {
-        if (x.status.sortRank !== y.status.sortRank) {
-          return x.status.sortRank - y.status.sortRank
-        }
-        if (x.deadline !== y.deadline) {
-          const dateX = new Date(x.deadline)
-          const dateY = new Date(y.deadline)
-          return dateX - dateY
-        }
-        if (x.category.sortRank !== y.category.sortRank) {
-          return x.category.sortRank - y.category.sortRank
-        }
-        if (x.name !== y.name) {
-          return x.name.localeCompare(y.name)
-        }
-        return 0
+    this.sort()
+    this.save()
+  },
+  removeTask: function (task) {
+    this.items.splice(this.items.indexOf(task), 1)
+
+    this.sort()
+    this.save()
+  },
+  sort: function () {
+    this.items.sort((a, b) => {
+      if (a.status.sortRank !== b.status.sortRank) {
+        return a.status.sortRank - b.status.sortRank
+      }
+      if (a.deadline !== b.deadline) {
+        const dateA = new Date(a.deadline)
+        const dateB = new Date(b.deadline)
+        return dateA - dateB
+      }
+      if (a.category.sortRank !== b.category.sortRank) {
+        return a.category.sortRank - b.category.sortRank
+      }
+      if (a.name !== b.name) {
+        return a.name.localeCompare(b.name)
+      }
+      return 0
+    })
+  },
+  display: function (tempList = this.items) {
+    tempList.forEach((task) => task.setOverdueIfOverdue())
+    this.domElement.innerHTML = ""
+
+    this.sort()
+    this.save()
+
+    tempList.forEach((task) => this.domElement.appendChild(task.createHTML()))
+  },
+  filter: function (categoryFilters, statusFilters) {
+    const tempList = this.items.filter(
+      (task) =>
+        categoryFilters.includes(task.category.value) ||
+        statusFilters.includes(task.status.value)
+    )
+
+    this.display(tempList)
+  },
+  serialize: function () {
+    return JSON.stringify(this.items.map((task) => task.propertiesOnly()))
+  },
+  save: function () {
+    localStorage.setItem("tasks", this.serialize())
+  },
+  deserialize: function () {
+    const localStorageTasks = JSON.parse(localStorage.getItem("tasks"))
+
+    const tasks = []
+    if (!localStorageTasks) {
+      localStorage.setItem("tasks", JSON.stringify(tasks))
+    } else {
+      localStorageTasks.forEach((localStorageTask) => {
+        const task = new Task(
+          localStorageTask.name,
+          localStorageTask.category,
+          localStorageTask.deadline,
+          localStorageTask.status
+        )
+
+        // Don't use .addTask() here
+        this.items.push(task)
       })
-    },
-    display: function (tempList = this.items) {
-      for (let task of tempList) {
-        task.setOverdueIfOverdue()
-      }
-      this.sort()
-      this.save()
-      this.domElement.innerHTML = ""
-      for (let task of tempList) {
-        const taskListItem = task.createHTML()
-        this.domElement.appendChild(taskListItem)
-      }
-    },
-    filter: function (categoryFilters, statusFilters) {
-      const tempList = this.items.filter(
-        (task) =>
-          categoryFilters.includes(task.category.value) ||
-          statusFilters.includes(task.status.value)
-      )
-      this.display(tempList)
-    },
-    serialize: function () {
-      const tasksPropertiessOnly = this.items.map((task) =>
-        task.propertiesOnly()
-      )
-      const tasksSerialized = JSON.stringify(tasksPropertiessOnly)
-      return tasksSerialized
-    },
-    save: function () {
-      localStorage.setItem("tasks", this.serialize())
-    },
-    deserialize: function () {
-      const localStorageTasks = JSON.parse(localStorage.getItem("tasks"))
 
-      if (!localStorageTasks) {
-        localStorage.setItem("tasks", JSON.stringify([]))
-      } else {
-        for (let localStorageTask of localStorageTasks) {
-          const name = localStorageTask.name
-          const category = localStorageTask.category
-          const deadline = localStorageTask.deadline
-          const status = localStorageTask.status
+      this.display()
+    }
+  },
+}
 
-          const task = new Task(name, category, deadline, status)
+class Task {
+  static nextId = 0
 
-          // Don't use .addTask() here
-          this.items.push(task)
-          this.display()
-        }
+  constructor(name, category, deadline, status) {
+    function initSetCategory(category) {
+      switch (category) {
+        case taskCategory.HOUSEHOLD.value:
+          category = taskCategory.HOUSEHOLD
+          break
+        case taskCategory.WORK.value:
+          category = taskCategory.WORK
+          break
+        case taskCategory.HOBBY.value:
+          category = taskCategory.HOBBY
+          break
+        case taskCategory.ENTERTAINMENT.value:
+          category = taskCategory.ENTERTAINMENT
+          break
+        default:
+          category = null
+          break
       }
-    },
+      return category
+    }
+
+    function initSetStatus(status) {
+      switch (status) {
+        case taskStatus.OVERDUE.value:
+          status = taskStatus.OVERDUE
+          break
+        case taskStatus.IN_PROGRESS.value:
+          status = taskStatus.IN_PROGRESS
+          break
+        case taskStatus.NOT_STARTED.value:
+          status = taskStatus.NOT_STARTED
+          break
+        case taskStatus.COMPLETED.value:
+          status = taskStatus.COMPLETED
+          break
+        default:
+          status = null
+          break
+      }
+      return status
+    }
+
+    this.id = Task.nextId++
+    this.htmlId = `task${this.id}`
+    this.name = name.trim()
+    this.category = initSetCategory(category)
+    this.deadline = deadline
+    this.status = initSetStatus(status)
   }
 
-  function today() {
-    const todayDate = new Date()
-
-    let year = todayDate.getFullYear()
-    let month = todayDate.getMonth() + 1
-    let day = todayDate.getDate()
-
-    year = year.toString()
-    month = month.toString().padStart(2, "0")
-    day = day.toString().padStart(2, "0")
-
-    return `${year}-${month}-${day}`
+  setStatus(newStatus) {
+    this.status = newStatus
   }
 
-  function displayDate(date) {
-    let [year, month, day] = date.split("-")
-
-    year = parseInt(year)
-    month = parseInt(month)
-    day = parseInt(day)
-
-    return `${month}/${day}/${year}`
+  isCompleted() {
+    return this.status === taskStatus.COMPLETED
   }
 
-  // &nbsp;
-  const nbsp = "\xa0"
+  isOverdue() {
+    return this.status === taskStatus.OVERDUE
+  }
 
-  class Task {
-    static nextId = 0
-
-    constructor(name, category, deadline, status) {
-      function initSetCategory(category) {
-        switch (category) {
-          case taskCategory.HOUSEHOLD.value:
-            category = taskCategory.HOUSEHOLD
-            break
-          case taskCategory.WORK.value:
-            category = taskCategory.WORK
-            break
-          case taskCategory.HOBBY.value:
-            category = taskCategory.HOBBY
-            break
-          case taskCategory.ENTERTAINMENT.value:
-            category = taskCategory.ENTERTAINMENT
-            break
-          default:
-            category = null
-            break
-        }
-        return category
-      }
-
-      function initSetStatus(status) {
-        switch (status) {
-          case taskStatus.OVERDUE.value:
-            status = taskStatus.OVERDUE
-            break
-          case taskStatus.IN_PROGRESS.value:
-            status = taskStatus.IN_PROGRESS
-            break
-          case taskStatus.NOT_STARTED.value:
-            status = taskStatus.NOT_STARTED
-            break
-          case taskStatus.COMPLETED.value:
-            status = taskStatus.COMPLETED
-            break
-          default:
-            status = null
-            break
-        }
-        return status
-      }
-
-      this.id = Task.nextId++
-      this.htmlId = `task${this.id}`
-      this.name = name.trim()
-      this.category = initSetCategory(category)
-      this.deadline = deadline
-      this.status = initSetStatus(status)
-    }
-
-    setStatus(newStatus) {
-      this.status = newStatus
-    }
-
-    isCompleted() {
-      return this.status === taskStatus.COMPLETED
-    }
-
-    setOverdueIfOverdue() {
-      if (!this.isCompleted()) {
-        if (today() >= this.deadline) {
-          this.setStatus(taskStatus.OVERDUE)
-        }
+  setOverdueIfOverdue() {
+    if (!this.isCompleted()) {
+      if (today() >= this.deadline) {
+        this.setStatus(taskStatus.OVERDUE)
       }
     }
+  }
 
-    createHTML() {
-      const taskListItem = document.createElement("li")
-      taskListItem.setAttribute("id", this.htmlId)
-      taskListItem.classList.add(
-        "list-group-item",
-        "d-flex",
-        "justify-content-between",
-        "align-items-start"
+  createHTML() {
+    const taskListItem = document.createElement("li")
+    taskListItem.setAttribute("id", this.htmlId)
+    taskListItem.classList.add(
+      "list-group-item",
+      "d-flex",
+      "justify-content-between",
+      "align-items-start"
+    )
+
+    const div = document.createElement("div")
+    div.classList.add("me-auto")
+    taskListItem.appendChild(div)
+
+    const checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    checkbox.classList.add("form-check-input", "me-3")
+    checkbox.setAttribute("id", `${this.htmlId}-checkbox`)
+    if (!this.isCompleted()) {
+      checkbox.setAttribute(
+        "aria-label",
+        `Click to set "${this.name}" to "Completed".`
       )
-
-      const div = document.createElement("div")
-      div.classList.add("me-auto")
-      taskListItem.appendChild(div)
-
-      const checkbox = document.createElement("input")
-      checkbox.type = "checkbox"
-      checkbox.classList.add("form-check-input", "me-3")
-      checkbox.setAttribute("id", `${this.htmlId}-checkbox`)
-      if (this.status !== taskStatus.COMPLETED) {
-        checkbox.setAttribute(
-          "aria-label",
-          `Click to set "${this.name}" to "Completed".`
-        )
-      } else if (this.status === taskStatus.COMPLETED) {
-        checkbox.setAttribute(
-          "aria-label",
-          `Click to set "${this.name}" to "In Progress".`
-        )
-      }
-      checkbox.addEventListener("change", (event) => {
-        if (event.target.checked) {
-          this.setStatus(taskStatus.COMPLETED)
-          taskList.display()
-        } else {
-          this.setStatus(taskStatus.IN_PROGRESS)
-          this.setOverdueIfOverdue()
-          taskList.display()
-        }
-      })
-      checkbox.checked = this.isCompleted() ? true : false
-      div.appendChild(checkbox)
-
-      const checkboxLabel = document.createElement("label")
-      checkboxLabel.setAttribute("for", `${this.htmlId}-checkbox`)
-      checkboxLabel.classList.add("form-check-label", "fw-bold", "mx-2")
-      checkboxLabel.innerHTML = this.isCompleted()
-        ? `<del>${this.name}</del>`
-        : this.name
-      div.appendChild(checkboxLabel)
-
-      const dueDate = document.createElement("em")
-      dueDate.textContent = `Due${nbsp}${displayDate(this.deadline)}`
-      div.appendChild(dueDate)
-
-      const categoryBadge = document.createElement("button")
-      categoryBadge.type = "button"
-      categoryBadge.setAttribute("id", `${this.htmlId}-category-badge`)
-      categoryBadge.setAttribute("disabled", "true")
-      categoryBadge.setAttribute("aria-disabled", "true")
-      categoryBadge.classList.add(
-        "btn",
-        "badge",
-        `text-bg-${this.category.bsColor}`,
-        "rounded-pill",
-        "ms-2"
+    } else if (this.isCompleted()) {
+      checkbox.setAttribute(
+        "aria-label",
+        `Click to set "${this.name}" to "In Progress".`
       )
-      categoryBadge.textContent = this.category.badgeText
-      categoryBadge.addEventListener("click", function (event) {
-        event.preventDefault()
-      })
-      taskListItem.appendChild(categoryBadge)
+    }
+    checkbox.addEventListener("change", (event) => {
+      if (event.target.checked) {
+        this.setStatus(taskStatus.COMPLETED)
 
-      const statusBadge = document.createElement("button")
-      statusBadge.type = "button"
-      statusBadge.setAttribute("id", `${this.htmlId}-status-badge`)
-      statusBadge.classList.add(
-        "btn",
-        "badge",
-        `text-bg-${this.status.bsColor}`,
-        "rounded-pill",
-        "ms-2"
-      )
-      statusBadge.textContent = this.status.badgeText
-      if (
-        this.status === taskStatus.COMPLETED ||
-        this.status === taskStatus.OVERDUE
-      ) {
-        statusBadge.setAttribute("disabled", "true")
-        statusBadge.setAttribute("aria-disabled", "true")
-      }
-      if (this.status === taskStatus.IN_PROGRESS) {
-        statusBadge.setAttribute(
-          "aria-label",
-          `Click to set "${this.name}" to "Not Started".`
-        )
-      } else if (this.status === taskStatus.NOT_STARTED) {
-        statusBadge.setAttribute(
-          "aria-label",
-          `Click to set "${this.name}" to "In Progress".`
-        )
-      }
-      statusBadge.addEventListener("click", () => {
-        if (this.status === taskStatus.IN_PROGRESS) {
-          this.setStatus(taskStatus.NOT_STARTED)
-          taskList.display()
-        } else if (this.status === taskStatus.NOT_STARTED) {
-          this.setStatus(taskStatus.IN_PROGRESS)
-          taskList.display()
-        }
-      })
-      taskListItem.appendChild(statusBadge)
-
-      const deleteButton = document.createElement("button")
-      deleteButton.type = "button"
-      deleteButton.setAttribute("aria-label", `Click to delete "${this.name}".`)
-      deleteButton.classList.add("ms-3", "btn-close")
-      deleteButton.addEventListener("click", (event) => {
-        event.preventDefault()
-        taskList.removeTask(this)
         taskList.display()
-      })
-      taskListItem.appendChild(deleteButton)
+      } else {
+        this.setStatus(taskStatus.IN_PROGRESS)
 
-      if (this.isCompleted()) {
-        taskListItem.classList.add("bg-black", "bg-gradient")
+        taskList.display()
       }
+    })
+    checkbox.checked = this.isCompleted() ? true : false
+    div.appendChild(checkbox)
 
-      if (this.status === taskStatus.OVERDUE) {
-        taskListItem.classList.add("bg-danger", "bg-gradient", "text-dark")
+    const checkboxLabel = document.createElement("label")
+    checkboxLabel.setAttribute("for", `${this.htmlId}-checkbox`)
+    checkboxLabel.classList.add("form-check-label", "fw-bold", "mx-2")
+    checkboxLabel.innerHTML = this.isCompleted()
+      ? `<del>${this.name}</del>`
+      : this.name
+    div.appendChild(checkboxLabel)
+
+    const dueDate = document.createElement("em")
+    dueDate.textContent = `Due${NBSP}${displayDate(this.deadline)}`
+    div.appendChild(dueDate)
+
+    const categoryBadge = document.createElement("button")
+    categoryBadge.type = "button"
+    categoryBadge.setAttribute("id", `${this.htmlId}-category-badge`)
+    categoryBadge.setAttribute("disabled", "true")
+    categoryBadge.setAttribute("aria-disabled", "true")
+    categoryBadge.classList.add(
+      "btn",
+      "badge",
+      `text-bg-${this.category.bsColor}`,
+      "rounded-pill",
+      "ms-2"
+    )
+    categoryBadge.textContent = this.category.badgeText
+    categoryBadge.addEventListener("click", (event) => event.preventDefault())
+    taskListItem.appendChild(categoryBadge)
+
+    const statusBadge = document.createElement("button")
+    statusBadge.type = "button"
+    statusBadge.setAttribute("id", `${this.htmlId}-status-badge`)
+    statusBadge.classList.add(
+      "btn",
+      "badge",
+      `text-bg-${this.status.bsColor}`,
+      "rounded-pill",
+      "ms-2"
+    )
+    statusBadge.textContent = this.status.badgeText
+    if (this.isCompleted() || this.isOverdue()) {
+      statusBadge.setAttribute("disabled", "true")
+      statusBadge.setAttribute("aria-disabled", "true")
+    }
+    if (this.status === taskStatus.IN_PROGRESS) {
+      statusBadge.setAttribute(
+        "aria-label",
+        `Click to set "${this.name}" to "Not Started".`
+      )
+    } else if (this.status === taskStatus.NOT_STARTED) {
+      statusBadge.setAttribute(
+        "aria-label",
+        `Click to set "${this.name}" to "In Progress".`
+      )
+    }
+    statusBadge.addEventListener("click", (event) => {
+      event.preventDefault()
+      if (this.status === taskStatus.IN_PROGRESS) {
+        this.setStatus(taskStatus.NOT_STARTED)
+
+        taskList.display()
+      } else if (this.status === taskStatus.NOT_STARTED) {
+        this.setStatus(taskStatus.IN_PROGRESS)
+
+        taskList.display()
       }
+    })
+    taskListItem.appendChild(statusBadge)
 
-      if (this.isCompleted()) {
-        taskListItem.classList.add("opacity-50")
-      }
+    const deleteButton = document.createElement("button")
+    deleteButton.type = "button"
+    deleteButton.setAttribute("aria-label", `Click to delete "${this.name}".`)
+    deleteButton.classList.add("ms-3", "btn-close")
+    deleteButton.addEventListener("click", (event) => {
+      event.preventDefault()
+      taskList.removeTask(this)
+      taskList.display()
+    })
+    taskListItem.appendChild(deleteButton)
 
-      return taskListItem
+    if (this.isCompleted()) {
+      taskListItem.classList.add("bg-black", "bg-gradient", "opacity-50")
+    }
+    if (this.isOverdue()) {
+      taskListItem.classList.add("bg-danger", "bg-gradient", "text-dark")
     }
 
-    propertiesOnly() {
-      return {
-        name: this.name,
-        category: this.category.value,
-        deadline: this.deadline,
-        status: this.status.value,
-      }
-    }
+    return taskListItem
   }
 
+  propertiesOnly() {
+    return {
+      name: this.name,
+      category: this.category.value,
+      deadline: this.deadline,
+      status: this.status.value,
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
   taskList.deserialize()
   taskList.display()
 
   const taskInputForm = document.getElementById("task-input-form")
-  taskInputForm.addEventListener("submit", function (event) {
+  taskInputForm.addEventListener("submit", (event) => {
     event.preventDefault()
 
     const taskInputFormData = new FormData(event.target)
@@ -399,11 +317,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const newTask = new Task(name, category, deadline, status)
 
     taskList.addTask(newTask)
-    taskList.display()
     event.target.reset()
+
+    taskList.display()
   })
 
   const taskFilterForm = document.getElementById("task-filter-form")
+
   const categoryFilterSelect = taskFilterForm.querySelector(
     "select[name='category-filters']"
   )
@@ -411,34 +331,30 @@ document.addEventListener("DOMContentLoaded", function () {
     "select[name='status-filters']"
   )
 
-  taskFilterForm.addEventListener("submit", function (event) {
+  taskFilterForm.addEventListener("submit", (event) => {
     event.preventDefault()
 
-    const selectedCategoryFilterOptions = Array.from(
+    const categoryFilters = Array.from(
       categoryFilterSelect.selectedOptions
-    )
-    const categoryFilters = selectedCategoryFilterOptions.map(
-      (option) => option.value
-    )
-    const selectedStatusFilterOptions = Array.from(
-      statusFilterSelect.selectedOptions
-    )
-    const statusFilters = selectedStatusFilterOptions.map(
+    ).map((option) => option.value)
+
+    const statusFilters = Array.from(statusFilterSelect.selectedOptions).map(
       (option) => option.value
     )
 
     taskList.filter(categoryFilters, statusFilters)
   })
-  taskFilterForm.addEventListener("reset", function (event) {
+
+  taskFilterForm.addEventListener("reset", (event) => {
     event.preventDefault()
 
-    taskList.display(taskList.items)
+    Array.from(categoryFilterSelect.options).forEach(
+      (option) => (option.selected = false)
+    )
+    Array.from(statusFilterSelect.options).forEach(
+      (option) => (option.selected = false)
+    )
 
-    for (let option of categoryFilterSelect.options) {
-      option.selected = false
-    }
-    for (let option of statusFilterSelect.options) {
-      option.selected = false
-    }
+    taskList.display(taskList.items)
   })
 })
