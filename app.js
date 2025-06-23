@@ -314,12 +314,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const taskInputFormData = new FormData(event.target)
 
-    const name = taskInputFormData.get("name")
-    const category = taskInputFormData.get("category")
-    const deadline = taskInputFormData.get("deadline")
-    const status = taskInputFormData.get("status")
+    // TODO: Implement form input validation
 
-    const newTask = new Task(name, category, deadline, status)
+    const newTask = new Task(
+      taskInputFormData.get("name"),
+      taskInputFormData.get("category"),
+      taskInputFormData.get("deadline"),
+      taskInputFormData.get("status")
+    )
 
     taskList.addTask(newTask)
     event.target.reset()
