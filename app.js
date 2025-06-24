@@ -40,7 +40,7 @@ const taskList = {
   },
   display: function (tempList = this.items) {
     tempList.forEach((task) => task.setOverdueIfOverdue())
-    this.domElement.innerHTML = ""
+    this.domElement.textContent = ""
 
     this.sort()
     this.save()
